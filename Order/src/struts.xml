@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="default" extends="struts-default" >
+	<!-- 用户的Action -->
+		<action name="ClientAction" class="ClientAction">
+				<result name="ok" >/page/faillogin.jsp</result>
+				<result name="fail">/page/faillogin.jsp</result>
+				<result name="input" type="redirect">/ClientAction!myData</result>
+				<result name="merge">/page/personal.jsp</result>
+	<!-- 跳转到userList.jsp -->
+				<result name="show">userList.jsp</result>
+				<result name="clientShow" type="redirect">admin/ClientAction!clientShow</result>
+		</action>
+		<action name="MenuAction" class="MenuAction">
+		  <interceptor-ref name="fileUpload">
+                <param name="allowedTypes">
+                    image/bmp,image/png,image/gif,image/jpeg,image/jpg
+                </param>
+                <param name="maximumSize">102400</param>
+            </interceptor-ref>
+            
+            <!-- 默认的拦截器，必须要写 -->
+            <interceptor-ref name="defaultStack" />
+            
+			<result name="ok">index.jsp</result>
+			<result name="detail">page/detail.jsp</result>
+			<result name="search">page/search.jsp</result>
+			<result name="show">menuList.jsp</result>
+			<result name="showmenu" type="redirect">admin/MenuAction!menuShow</result>
+			
+			<result name="input" type="redirect">index.jsp</result>
+			<result name="mer" >menuMer.jsp</result>
+			
+		</action>
+	<action name="OrdersAction" class="OrdersAction">
+			<result name="input">page/order.jsp</result>
+			<result name="jump">jump/jumpOrder.jsp</result>
+			<result name="del" type="redirect">jump/jumpOrder.jsp</result>
+			<result name="show" >ordersList.jsp</result>
+			<result name="process" >ordersProcess.jsp</result>
+			<result name="jump2" type="redirect" >admin/OrdersAction!processShow</result>
+			<result name="date" >ordersDate.jsp</result>
+		</action>
+		<action name="ReviewAction" class="ReviewAction">
+			<result name="input">/page/jump.jsp</result>
+			<result name="ok">/page/jump.jsp</result>
+			<result name="listuserinfo">page/showuserlist.jsp</result>
+			<result name="init">page/MyJsp.jsp</result>
+		</action>
+		<!-- 管理员 -->
+		<action name="AdministratorAction" class="AdministratorAction">
+			<result name="ok">adminList.jsp</result>
+			<result name="show"  type="redirect">admin/AdministratorAction!myShow</result>
+			<result name="index">index.jsp</result>
+			<result name="fail">login.jsp</result>
+			<result name="mer">adminMer.jsp</result>
+		</action>
+		<!-- 公告 -->
+		<action name="AnnouncementAction" class="AnnouncementAction">
+			<result name="show">announcementList.jsp</result>
+			<result name="init">page/new.jsp</result>
+			<result name="yubei" type="redirect">admin/AnnouncementAction!myShow</result>
+		</action>
+		
+		<action name="BasketAction" class="BasketAction">
+			<result name="ok">/page/faillogin.jsp</result>
+			<result name="show">page/basket.jsp</result>
+		</action>
+        
+	</package>
+	<constant name="struts.ui.theme" value="simple" />
+	<constant name="struts.ui.templateDir" value="template" />
+	<constant name="struts.ui.templateSuffix" value="ftl" />
+	<!-- 指定国际化资源文件的baseName为messageResource -->
+     <constant name="struts.custom.i18n.resources" value="messageResource"/>
+    
+    <!-- 设置该应用使用的解码集 -->
+     <constant name="struts.i18n.encoding" value="utf-8"/>
+ 
+     <!-- 上传的全部图片的最大限制-->
+     <constant name="struts.multipart.maxSize" value="1024102400"/>
+
+</struts>    

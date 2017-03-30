@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"
+			value="com.mysql.jdbc.Driver">
+		</property>
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/pocket">
+		</property>
+		<property name="username" value="root"></property>
+		<property name="password" value="woaini520"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQL5Dialect
+				</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/pocket/sql/bean/Menu.hbm.xml</value>
+				<value>com/pocket/sql/bean/Administrator.hbm.xml</value>
+				<value>com/pocket/sql/bean/Review.hbm.xml</value>
+				<value>com/pocket/sql/bean/Client.hbm.xml</value>
+				<value>com/pocket/sql/bean/Announcement.hbm.xml</value>
+				<value>com/pocket/sql/bean/Orders.hbm.xml</value>
+				<value>com/pocket/sql/bean/Basket.hbm.xml</value></list>
+		</property></bean>
+	<bean id="ReviewDAO" class="com.pocket.sql.dao.ReviewDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="AnnouncementDAO"
+		class="com.pocket.sql.dao.AnnouncementDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="AdministratorDAO"
+		class="com.pocket.sql.dao.AdministratorDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ClientDAO" class="com.pocket.sql.dao.ClientDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="MenuDAO" class="com.pocket.sql.dao.MenuDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="OrdersDAO" class="com.pocket.sql.dao.OrdersDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	
+	<!--用户 -->
+	<bean id="ClientService" class="com.pocket.service.impl.ClientServiceImpl">
+		<property name="clientDAO"><!-- 被注入的对象名 -->
+			<ref bean="ClientDAO" /><!-- 注入的bean -->
+		</property>
+	</bean>
+	<bean id="ClientAction" class="com.pocket.view.action.ClientAction">
+		<property name="clientService"><!-- 被注入的对象名 -->
+			<ref bean="ClientService" /><!-- 注入的bean -->
+		</property>
+	</bean>
+	
+	<!-- 菜单 -->
+	<bean id="MenuService" class="com.pocket.service.impl.MenuServiceImpl">
+		<property name="menuDAO">
+			<ref bean="MenuDAO"/>
+		</property>
+	</bean>
+	<bean id="ReviewService" class="com.pocket.service.impl.ReviewServiceimpl">
+		<property name="reviewDAO">
+			<ref bean="ReviewDAO"/>
+		</property>
+	</bean>
+	<bean id="MenuAction" class="com.pocket.view.action.MenuAction">
+		<property name="menuService">
+			<ref bean="MenuService"/>
+		</property>
+		<property name="reviewService">
+			<ref bean="ReviewService"/>
+		</property>
+	</bean>
+	
+	<!-- 订单 -->
+	<bean id="OrdersService" class="com.pocket.service.impl.OrdersServiceImpl">
+		<property name="ordersDAO">
+			<ref bean="OrdersDAO"/>
+		</property>
+		<property name="clientDAO">
+			<ref bean="ClientDAO"/>
+		</property>
+		<property name="menuDAO">
+			<ref bean="MenuDAO"/>
+		</property>
+	</bean>
+	<bean id="OrdersAction" class="com.pocket.view.action.OrdersAction">
+		<property name="ordersService">
+			<ref bean="OrdersService"/>
+		</property>
+	</bean>
+	<!-- 评论 -->
+
+	<bean id="ReviewAction" class="com.pocket.view.action.ReviewAction">
+		<property name="reviewService">
+			<ref bean="ReviewService"/>
+		</property>
+	</bean>
+	<!-- 管理员 -->
+	<bean id="AdministratorService" class="com.pocket.service.impl.AdministratorServiceImpl">
+		<property name="administratorDAO">
+			<ref bean="AdministratorDAO"/>
+		</property>
+	</bean>
+	<bean id="AdministratorAction" class="com.pocket.view.action.AdministratorAction">
+		<property name="administratorService">
+			<ref bean="AdministratorService"/>
+		</property>
+	</bean>
+	<bean id="AnnouncementService" class="com.pocket.service.impl.AnnouncementServiceImpl">
+		<property name="announcementDAO">
+			<ref bean="AnnouncementDAO"/>
+		</property>
+	</bean>
+	<bean id="AnnouncementAction" class="com.pocket.view.action.AnnouncementAction">
+		<property name="announcementService">
+			<ref bean="AnnouncementService"></ref>
+		</property>
+	</bean>
+	<bean id="BasketDAO" class="com.pocket.sql.dao.BasketDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="BasketService" class="com.pocket.service.impl.BasketServiceImpl">
+		<property name="basketDAO">
+			<ref bean="BasketDAO"/>
+		</property>
+	</bean>
+	<bean id="BasketAction" class="com.pocket.view.action.BasketAction">
+		<property name="basketService">
+			<ref bean="BasketService"/>
+		</property>
+		<property name="menuDAO">
+			<ref bean="MenuDAO"/>
+		</property>
+		
+	</bean>
+	</beans>
